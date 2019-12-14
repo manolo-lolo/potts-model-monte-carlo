@@ -1,6 +1,8 @@
 # Potts model Monte Carlo simulation
 Simulation of the Potts model for a university course in Monte Carlo simulations
 
+## Preview
+![alt text](preview.gif "Logo Title Text 1")
 
 ## Install dependencies
 You need need Python3 with Tkinter and PIP.
