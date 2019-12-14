@@ -8,8 +8,8 @@ from interaction import kronecker
 from metropolis import update_metropolis
 
 q = 4
-WIDTH = 8
-TEMPERATURE = 4.0
+WIDTH = 12
+TEMPERATURE = 1.9
 INTERACTION = kronecker
 J_c = 1.
 h = 1.
