@@ -6,11 +6,15 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.figure import Figure
 
 
-def init_gui(root, init_figure: Figure, on_key_press: Callable) -> (tkinter.Label, FigureCanvasTkAgg):
+def init_gui(root, init_figure: Figure, step_function: Callable) -> (tkinter.Label, FigureCanvasTkAgg):
     def event_key_press(event):
         print("you pressed {}".format(event.key))
-        on_key_press()
+        step_function()
         key_press_handler(event, canvas, toolbar)
+
+    def do_several_steps(n: int):
+        for _ in range(n):
+            step_function()
 
     def quit_():
         root.quit()
@@ -32,6 +36,20 @@ def init_gui(root, init_figure: Figure, on_key_press: Callable) -> (tkinter.Labe
 
     button = tkinter.Button(master=root, text="Quit", command=quit_)
     button.pack(side=tkinter.BOTTOM)
+
+    button_group = tkinter.Frame(master=root)
+    button_group.pack(side=tkinter.BOTTOM)
+    button_1_step = tkinter.Button(master=button_group, text='1 MC step', command=lambda: do_several_steps(1))
+    button_1_step.pack(side=tkinter.LEFT)
+    button_10_step = tkinter.Button(master=button_group, text='10 MC steps', command=lambda: do_several_steps(10))
+    button_10_step.pack(side=tkinter.LEFT)
+    button_100_step = tkinter.Button(master=button_group, text='100 MC steps', command=lambda: do_several_steps(100))
+    button_100_step.pack(side=tkinter.LEFT)
+    button_1000_step = tkinter.Button(master=button_group, text='1000 MC steps', command=lambda: do_several_steps(1000))
+    button_1000_step.pack(side=tkinter.LEFT)
+
+    label_help = tkinter.Label(master=root, text='Pressing any keyboard button will do 1 MC step')
+    label_help.pack(side=tkinter.BOTTOM)
 
     return label, canvas
 
