@@ -30,3 +30,14 @@ With the virtual environment still activated (`source potts-venv/bin/activate`),
 ```bash
 python main.py
 ```
+
+## TODO
+* Add magnetization term
+* Add temperature to GUI
+* Speed up metropolis algorithm
+
+## Further ideas
+* Add changeable boundary conditions
+* Make parameters (e. g. magnetization coefficient) changeable in GUI
+* Add simulation mode to loop e. g. over different temperatures
+* Add more statistics to the GUI, e. g. distribution of spin values
