@@ -5,45 +5,57 @@ from typing_helper import Interaction, States
 
 
 def calculate_interaction_of_one_spin(field: np.ndarray, x: int, y: int, interaction: Interaction,
-                                      magnetization_coefficient: float) -> float:
-    # TODO factor 2 ?!
+                                      interaction_coefficient: float) -> float:
     energy = 0
-    if x > 0:  # dim!!
+    if x - 1 >= 0:
         energy += interaction(field[x - 1, y], field[x, y])
     if x + 1 < field.shape[0]:
         energy += interaction(field[x, y], field[x + 1, y])
-    if y > 0:
+    if y - 1 >= 0:
         energy += interaction(field[x, y - 1], field[x, y])
     if y + 1 < field.shape[1]:
         energy += interaction(field[x, y], field[x, y + 1])
-    return 2 * magnetization_coefficient * energy
+    # About the factor 2: b interacts with c, but c also with b. A change of b thus results in *two* interaction changes
+    return - 2 * interaction_coefficient * energy
 
 
 def calculate_energy_difference(field: np.ndarray, x: int, y: int, new_spin: int, interaction: Interaction,
-                                magnetization_coefficient: float) -> (float, np.ndarray):
+                                interaction_coefficient: float, magnetization_coefficient: float) -> (float, np.ndarray):
     # positive return value: update would imply energetically less favorable state
 
-    current_energy = calculate_interaction_of_one_spin(field, x, y, interaction, magnetization_coefficient)
+    current_energy = calculate_interaction_of_one_spin(field, x, y, interaction, interaction_coefficient)
     field_updated = field.copy()  # Avoid side effects of function by copying
     field_updated[x, y] = new_spin
-    updated_energy = calculate_interaction_of_one_spin(field_updated, x, y, interaction, magnetization_coefficient)
+    updated_energy = calculate_interaction_of_one_spin(field_updated, x, y, interaction, interaction_coefficient)
     energy_difference = updated_energy - current_energy \
                         + magnetization_coefficient * (field_updated[x, y] - field[x, y])
     return updated_energy - current_energy, field_updated
 
 
 def update_metropolis(field: np.ndarray, states: States, free_energy: float, interaction: Interaction,
-                      magnetization_coefficient, random_state: RandomState) -> (np.ndarray, float):
+                      interaction_coefficient: float, magnetization_coefficient: float, temperature: float,
+                      random_state: RandomState) -> (np.ndarray, float):
     assert states
     assert field.shape[0] == field.shape[1]
 
     size = field.shape[0]
     random_x, random_y = random_state.randint(size, size=[2])  # dim
-    random_spin = random_state.choice(states)
-    energy_difference, field_updated = calculate_energy_difference(field, random_x, random_y, random_spin, interaction,
-                                                                   magnetization_coefficient)
-    if energy_difference < 0 or random_state.uniform():
-        # free_energy_updated = free_energy - energy_difference
-        return field_updated, free_energy
+
+    new_spin = field[random_x, random_y]
+    # spin flip always needs to lead to a change of spin
+    while new_spin == field[random_x, random_y]:
+        new_spin = random_state.choice(states)
+
+    energy_delta, field_updated = calculate_energy_difference(field, random_x, random_y, new_spin, interaction,
+                                                              interaction_coefficient, magnetization_coefficient)
+    random_number = random_state.uniform()
+    acceptance_probability = np.exp(-1. / temperature * energy_delta)
+    print(f'Energy delta: {energy_delta}, random number: {random_number}, '
+          f'acceptance_probability: {acceptance_probability}')
+    if energy_delta <= 0 or random_number < acceptance_probability:
+        # free_energy_updated = free_energy - energy_delta
+        print('Change accepted')
+        return field_updated, free_energy - energy_delta
     else:
+        print('Not accepted')
         return field, free_energy
