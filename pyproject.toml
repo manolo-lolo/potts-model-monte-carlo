@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "potts-model-mc"
+version = "0.1.0"
+description = "A Monte Carlo simulation of the Potts model"
+authors = ["Manuel Jahn"]
+
+[tool.poetry.dependenc1ies]
+python = "^3.6"
+numpy = "^1.17.4"
+matplotlib = "^3.1.2"
+seaborn = "^0.9.0"
+
+[tool.poetry.dev-dependencies]
+# pytest = "^5.3.1"
+
