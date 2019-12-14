@@ -9,6 +9,7 @@ from metropolis import update_metropolis
 
 q = 4
 WIDTH = 8
+TEMPERATURE = 4.0
 INTERACTION = kronecker
 J_c = 1.
 h = 1.
@@ -28,8 +29,8 @@ mc_step = 0
 
 def update_step() -> None:
     global mc_step, field, free_energy, figure
-    field, free_energy = update_metropolis(field, states, free_energy, INTERACTION,
-                                           magnetization_coefficient=h, random_state=rg)
+    field, free_energy = update_metropolis(field, states, free_energy, INTERACTION, interaction_coefficient=J_c,
+                                           magnetization_coefficient=h, random_state=rg, temperature=TEMPERATURE)
     mc_step += 1
     figure = plot_field(field, states)
     draw_figure(canvas, figure)
