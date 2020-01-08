@@ -8,6 +8,10 @@ TEMPERATURE = 1.9
 INTERACTION = kronecker
 J = 1.
 h = 0.
+FIX_LEFT = None
+FIX_TOP = None
+FIX_RIGHT = None
+FIX_BOTTOM = None
 
 VERBOSE = True
 

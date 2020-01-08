@@ -2,7 +2,7 @@ import numpy as np
 from numpy.random import RandomState
 
 from typing_helper import Interaction, States
-from output_helper import print_if_verbose
+from helper import print_if_verbose
 
 
 def calculate_interaction_of_one_spin(field: np.ndarray, x: int, y: int, interaction: Interaction,

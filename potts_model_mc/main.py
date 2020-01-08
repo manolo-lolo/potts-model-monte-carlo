@@ -3,10 +3,12 @@ import tkinter
 from config import q, WIDTH, TEMPERATURE, INTERACTION, J, h, RANDOM_SEED
 from field import generate_field, calculate_energy_of_field, plot_field
 from gui import init_gui, draw_figure, update_energy_label
+from helper import check_config_valid
 from metropolis import update_metropolis
 from numpy.random import RandomState
 
 states = list(range(q))
+check_config_valid()
 rg = RandomState(RANDOM_SEED)
 
 field = generate_field(states, WIDTH, rg, correlation=0.3)
