@@ -8,7 +8,6 @@ from matplotlib.figure import Figure
 
 def init_gui(root, init_figure: Figure, step_function: Callable) -> (tkinter.Label, FigureCanvasTkAgg):
     def event_key_press(event):
-        print("you pressed {}".format(event.key))
         step_function()
         key_press_handler(event, canvas, toolbar)
 

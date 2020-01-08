@@ -2,6 +2,7 @@ import numpy as np
 from numpy.random import RandomState
 
 from typing_helper import Interaction, States
+from output_helper import print_if_verbose
 
 
 def calculate_interaction_of_one_spin(field: np.ndarray, x: int, y: int, interaction: Interaction,
@@ -50,12 +51,12 @@ def update_metropolis(field: np.ndarray, states: States, free_energy: float, int
                                                               interaction_coefficient, magnetization_coefficient)
     random_number = random_state.uniform()
     acceptance_probability = np.exp(-1. / temperature * energy_delta)
-    print(f'Energy delta: {energy_delta}, random number: {random_number}, '
+    print_if_verbose(f'Energy delta: {energy_delta}, random number: {random_number}, '
           f'acceptance_probability: {acceptance_probability}')
     if energy_delta <= 0 or random_number < acceptance_probability:
         # free_energy_updated = free_energy - energy_delta
-        print('Change accepted')
+        print_if_verbose('Change accepted')
         return field_updated, free_energy - energy_delta
     else:
-        print('Not accepted')
+        print_if_verbose('Not accepted')
         return field, free_energy

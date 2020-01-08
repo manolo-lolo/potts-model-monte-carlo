@@ -1,21 +1,10 @@
 import tkinter
 
-from numpy.random import RandomState
-
+from config import q, WIDTH, TEMPERATURE, INTERACTION, J_c, h, RANDOM_SEED
 from field import generate_field, calculate_energy_of_field, plot_field
 from gui import init_gui, draw_figure, update_energy_label
-from interaction import kronecker
 from metropolis import update_metropolis
-
-q = 4
-WIDTH = 12
-TEMPERATURE = 1.9
-INTERACTION = kronecker
-J_c = 1.
-h = 1.
-
-RANDOM_SEED = 424242
-
+from numpy.random import RandomState
 
 states = list(range(q))
 rg = RandomState(RANDOM_SEED)
