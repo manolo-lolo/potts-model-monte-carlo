@@ -28,9 +28,17 @@ def calculate_energy_difference(field: np.ndarray, x: int, y: int, new_spin: int
     field_updated = field.copy()  # Avoid side effects of function by copying
     field_updated[x, y] = new_spin
     updated_energy = calculate_interaction_of_one_spin(field_updated, x, y, interaction, interaction_coefficient)
-    energy_difference = updated_energy - current_energy \
-                        + magnetization_coefficient * (field_updated[x, y] - field[x, y])
-    return updated_energy - current_energy, field_updated
+    magnetization_difference = magnetization_coefficient * (field_updated[x, y] - field[x, y])
+    energy_difference = updated_energy - current_energy + magnetization_difference
+
+    if magnetization_coefficient != 0.:
+        if magnetization_difference > 0:
+            print_if_verbose(f'Magnetization would worsen by {magnetization_difference}.')
+        elif magnetization_difference < 0:
+            print_if_verbose(f'Magnetization would improve by {magnetization_difference}.')
+        else:
+            print_if_verbose(f'Magnetization would not change.')
+    return energy_difference, field_updated
 
 
 def update_metropolis(field: np.ndarray, states: States, free_energy: float, interaction: Interaction,
