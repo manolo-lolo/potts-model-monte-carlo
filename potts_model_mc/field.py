@@ -1,12 +1,10 @@
 from itertools import product
 from typing import Optional
 
-import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
 import numpy as np
 import seaborn as sns
+from matplotlib.figure import Figure
 from numpy.random import RandomState
-
 from typing_helper import States, Interaction
 
 
