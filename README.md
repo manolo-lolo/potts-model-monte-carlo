@@ -32,8 +32,6 @@ python main.py
 ```
 
 ## TODO
-* Add magnetization term
-* Add temperature to GUI
 * Speed up metropolis algorithm
 
 ## Further ideas

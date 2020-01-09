@@ -1,8 +1,9 @@
 import numpy as np
-from numpy.random import RandomState
 
-from typing_helper import Interaction, States
+from config import FIX_LEFT, FIX_RIGHT, FIX_BOTTOM, FIX_TOP
 from helper import print_if_verbose
+from numpy.random import RandomState
+from typing_helper import Interaction, States
 
 
 def calculate_interaction_of_one_spin(field: np.ndarray, x: int, y: int, interaction: Interaction,
@@ -48,7 +49,12 @@ def update_metropolis(field: np.ndarray, states: States, free_energy: float, int
     assert field.shape[0] == field.shape[1]
 
     size = field.shape[0]
-    random_x, random_y = random_state.randint(size, size=[2])  # dim
+    min_x = 0 if FIX_LEFT is None else 1
+    max_x = size if FIX_RIGHT is None else size - 1
+    min_y = 0 if FIX_BOTTOM is None else 1
+    max_y = size if FIX_TOP is None else size - 1
+    random_x = random_state.randint(min_x, max_x)  # dim
+    random_y = random_state.randint(min_y, max_y)
 
     new_spin = field[random_x, random_y]
     # spin flip always needs to lead to a change of spin
@@ -60,7 +66,7 @@ def update_metropolis(field: np.ndarray, states: States, free_energy: float, int
     random_number = random_state.uniform()
     acceptance_probability = np.exp(-1. / temperature * energy_delta)
     print_if_verbose(f'Energy delta: {energy_delta}, random number: {random_number}, '
-          f'acceptance_probability: {acceptance_probability}')
+                     f'acceptance_probability: {acceptance_probability}')
     if energy_delta <= 0 or random_number < acceptance_probability:
         # free_energy_updated = free_energy - energy_delta
         print_if_verbose('Change accepted')

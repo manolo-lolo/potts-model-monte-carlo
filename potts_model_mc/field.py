@@ -5,7 +5,22 @@ import numpy as np
 import seaborn as sns
 from matplotlib.figure import Figure
 from numpy.random import RandomState
+
+from config import FIX_LEFT, FIX_TOP, FIX_RIGHT, FIX_BOTTOM
 from typing_helper import States, Interaction
+
+
+def overwrite_edges(field: np.ndarray, size: int):
+    field = field.copy()
+    if FIX_LEFT is not None:
+        field[:, 0] = FIX_LEFT
+    if FIX_RIGHT is not None:
+        field[:, size-1] = FIX_RIGHT
+    if FIX_BOTTOM is not None:
+        field[size-1, :] = FIX_BOTTOM
+    if FIX_TOP is not None:
+        field[0, :] = FIX_TOP
+    return field
 
 
 def generate_field(states: States, size: int, rg: RandomState, correlation: float = 0.0) -> np.ndarray:
@@ -14,7 +29,7 @@ def generate_field(states: States, size: int, rg: RandomState, correlation: floa
     assert 0.0 < correlation < 1.0
 
     field = np.array(rg.choice(states, size=[size, size]), dtype=np.int8)
-
+    field = overwrite_edges(field, size)
     if correlation == 0.0:
         return field
 
@@ -25,6 +40,8 @@ def generate_field(states: States, size: int, rg: RandomState, correlation: floa
                     field[i, j] = field[i - 1, j]
                 else:
                     field[i, j] = field[i, j - 1]
+
+    field = overwrite_edges(field, size)
     return field
 
 

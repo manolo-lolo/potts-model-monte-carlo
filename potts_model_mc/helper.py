@@ -1,4 +1,4 @@
-from config import q, WIDTH, VERBOSE, TEMPERATURE, J, h, FIX_LEFT, FIX_TOP, FIX_RIGHT, FIX_BOTTOM
+from config import q, WIDTH, VERBOSE, TEMPERATURE, J, h, FIX_LEFT, FIX_TOP, FIX_RIGHT, FIX_BOTTOM, PLOT_EVERY_X_STEPS
 
 
 def print_if_verbose(*args):
@@ -12,7 +12,9 @@ def check_config_valid():
     assert(0.01 < TEMPERATURE < 100)
     assert(0 <= J <= 100)
     assert(0 <= h <= 100)
-    assert(FIX_LEFT is None or 0 < FIX_LEFT < q)
-    assert(FIX_TOP is None or 0 < FIX_TOP < q)
-    assert(FIX_RIGHT is None or 0 < FIX_RIGHT < q)
-    assert(FIX_BOTTOM is None or 0 < FIX_BOTTOM < q)
+    assert(FIX_LEFT is None or 0 <= FIX_LEFT < q)
+    assert(FIX_TOP is None or 0 <= FIX_TOP < q)
+    assert(FIX_RIGHT is None or 0 <= FIX_RIGHT < q)
+    assert(FIX_BOTTOM is None or 0 <= FIX_BOTTOM < q)
+    assert(VERBOSE is True or VERBOSE is False)
+    assert(int(PLOT_EVERY_X_STEPS) == PLOT_EVERY_X_STEPS and PLOT_EVERY_X_STEPS >= 1)

@@ -44,8 +44,10 @@ def init_gui(root, init_figure: Figure, step_function: Callable) -> (tkinter.Lab
     button_10_step.pack(side=tkinter.LEFT)
     button_100_step = tkinter.Button(master=button_group, text='100 MC steps', command=lambda: do_several_steps(100))
     button_100_step.pack(side=tkinter.LEFT)
-    button_1000_step = tkinter.Button(master=button_group, text='1000 MC steps', command=lambda: do_several_steps(1000))
+    button_1000_step = tkinter.Button(master=button_group, text='1.000 MC steps', command=lambda: do_several_steps(1000))
     button_1000_step.pack(side=tkinter.LEFT)
+    button_10000_step = tkinter.Button(master=button_group, text='10.000 MC steps', command=lambda: do_several_steps(10000))
+    button_10000_step.pack(side=tkinter.LEFT)
 
     label_help = tkinter.Label(master=root, text='Pressing any keyboard button will do 1 MC step')
     label_help.pack(side=tkinter.BOTTOM)
@@ -54,7 +56,7 @@ def init_gui(root, init_figure: Figure, step_function: Callable) -> (tkinter.Lab
 
 
 def update_energy_label(label: tkinter.Label, mc_step: int, free_energy: float) -> None:
-    label['text'] = f'Free energy: {free_energy}, MC step: {mc_step}'
+    label['text'] = f'Free energy: {round(free_energy, 1)}, MC step: {mc_step}'
 
 
 def draw_figure(canvas: FigureCanvasTkAgg, figure: Figure) -> None:
